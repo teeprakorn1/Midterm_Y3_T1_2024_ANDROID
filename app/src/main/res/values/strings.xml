@@ -1,0 +1,11 @@
+<resources>
+    <string name="root_url">http://10.10.9.76:3000</string>
+    <string name="insert_url">/api/home/insert</string>
+    <string name="get_url">/api/home/get</string>
+    <string name="get_url_id">/api/home/get/</string>
+
+    <string name="app_name">midterm</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
