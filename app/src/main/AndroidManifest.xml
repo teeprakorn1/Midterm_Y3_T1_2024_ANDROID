@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -16,19 +18,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Midterm"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+
+        <activity
+            android:name=".select.HomeSelect_2"
+            android:exported="false" />
+        <activity
+            android:name=".insert.HomeInsert_1"
+            android:exported="false" />
         <activity
             android:name=".insert.HomeInsert_2"
             android:exported="false" />
         <activity
-            android:name=".select.HomeSelect"
+            android:name=".select.HomeSelect_1"
             android:exported="false" />
         <activity
-            android:name=".insert.HomeInsert_1"
-            android:exported="true" >
+            android:name=".HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -107,6 +107,42 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/Text03_Layout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Text02_Layout">
+
+        <TextView
+            android:id="@+id/HomeBathroom_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2.5"
+            android:shadowDy="2.3"
+            android:shadowRadius="10.6"
+            android:text="ห้องน้ำ"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/HomeBathroom_edittext"
+            style="@style/input_info"
+            android:layout_marginTop="5dp"
+            android:autofillHints=""
+            android:inputType="number"
+            tools:ignore="LabelFor" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/Insert_Button"
         style="@style/button_red"
@@ -146,9 +182,10 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="50dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Text02_Layout">
+        app:layout_constraintTop_toBottomOf="@+id/Text03_Layout">
 
         <ImageView
             android:id="@+id/imageViewFile"
