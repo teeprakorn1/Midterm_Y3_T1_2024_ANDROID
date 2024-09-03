@@ -32,10 +32,12 @@ class HomeActivity : AppCompatActivity() {
 
         addButton.setOnClickListener {
             val intent = Intent(this, HomeInsert_1::class.java)
+            intent.putExtra("statusActivity","1")
             startActivity(intent)
         }
         getButton.setOnClickListener {
             val intent = Intent(this, HomeSelect_1::class.java)
+            intent.putExtra("statusActivity","1")
             startActivity(intent)
         }
 

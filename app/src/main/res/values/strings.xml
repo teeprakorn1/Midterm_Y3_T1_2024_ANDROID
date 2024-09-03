@@ -1,5 +1,5 @@
 <resources>
-    <string name="url_server">http://10.10.9.76:3000</string>
+    <string name="url_server">http://10.13.1.135:3000</string>
     <string name="insert_url">/api/home/insert</string>
     <string name="get_url">/api/home/get</string>
     <string name="get_url_id">/api/home/get/</string>

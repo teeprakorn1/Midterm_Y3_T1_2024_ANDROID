@@ -18,19 +18,18 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import androidx.core.view.WindowInsetsCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.rmutto.midterm.HomeActivity
 import com.rmutto.midterm.R
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONObject
+import java.io.File
 
 class HomeInsert_2 : AppCompatActivity() {
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
-
-    private val homeSize = intent.getStringExtra("homeSize")
-    private val homeBedroom = intent.getStringExtra("homeBedroom")
-    private val homePrice = intent.getStringExtra("homePrice")
-    private val homeCondition = intent.getStringExtra("homeCondition")
-    private val homeType = intent.getStringExtra("homeType")
-    private val homeYearBuilt = intent.getStringExtra("homeYearBuilt")
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,21 @@ class HomeInsert_2 : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val statusActivity = intent.getStringExtra("statusActivity")
+        if (statusActivity != "1") {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         supportActionBar?.hide()
+
+        val homeSize = intent.getStringExtra("homeSize")
+        val homeBedroom = intent.getStringExtra("homeBedroom")
+        val homePrice = intent.getStringExtra("homePrice")
+        val homeCondition = intent.getStringExtra("homeCondition")
+        val homeType = intent.getStringExtra("homeType")
+        val homeYearBuilt = intent.getStringExtra("homeYearBuilt")
 
         val imageViewFile = findViewById<ImageView>(R.id.imageViewFile)
         val homeParkingSpaceEdittext = findViewById<EditText>(R.id.HomeParkingSpace_edittext)
@@ -54,7 +67,7 @@ class HomeInsert_2 : AppCompatActivity() {
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
-                val imageUri: Uri? = data?.data
+                imageUri = data?.data
                 imageUri?.let {
                     imageViewFile.setImageURI(it)
                     // Handle the image URI here if needed (e.g., uploading to a server)
@@ -73,39 +86,62 @@ class HomeInsert_2 : AppCompatActivity() {
         }
 
         insertButton.setOnClickListener {
+            if (homeParkingSpaceEdittext.text.toString().isEmpty()){
+                homeParkingSpaceEdittext.error = "กรุณากรอกข้อมูล"
+                return@setOnClickListener
+            }else if(homeAddressEdittext.text.toString().isEmpty()){
+                homeAddressEdittext.error = "กรุณากรอกข้อมูล"
+                return@setOnClickListener
+            }else if(homeBathroomEdittext.text.toString().isEmpty()){
+                homeBathroomEdittext.error = "กรุณากรอกข้อมูล"
+                return@setOnClickListener
+            }
+
             val url = getString(R.string.url_server) + getString(R.string.insert_url)
             val okHttpClient = OkHttpClient()
-            val formBody: RequestBody = FormBody.Builder()
-                .add("Home_Size", homeSize.toString())
-                .add("Home_Bedroom", homeBedroom.toString())
-                .add("Home_Bathroom", homeBathroomEdittext.toString())
-                .add("Home_Price", homePrice.toString())
-                .add("Home_Condition", homeCondition.toString())
-                .add("Home_Type", homeType.toString())
-                .add("Home_YearBuilt", homeYearBuilt.toString())
-                .add("Home_ParkingSpace", homeParkingSpaceEdittext.toString())
-                .add("Home_Address", homeAddressEdittext.toString())
-                .build()
+
+            val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("Home_Size", homeSize.orEmpty())
+                .addFormDataPart("Home_Bedroom", homeBedroom.orEmpty())
+                .addFormDataPart("Home_Bathroom", homeBathroomEdittext.text.toString())
+                .addFormDataPart("Home_Price", homePrice.orEmpty())
+                .addFormDataPart("Home_Condition", homeCondition.orEmpty())
+                .addFormDataPart("Home_Type", homeType.orEmpty())
+                .addFormDataPart("Home_YearBuilt", homeYearBuilt.orEmpty())
+                .addFormDataPart("Home_ParkingSpace", homeParkingSpaceEdittext.text.toString())
+                .addFormDataPart("Home_Address", homeAddressEdittext.text.toString())
+
+            // Add image if present
+            imageUri?.let {
+                val file = File(it.path!!)
+                val requestFile = file.asRequestBody("image/jpeg".toMediaType())
+                builder.addFormDataPart("Home_Image", file.name, requestFile)
+            }
+
+            val requestBody = builder.build()
+
             val request: Request = Request.Builder()
                 .url(url)
-                .post(formBody)
+                .post(requestBody)
                 .build()
+
             val response = okHttpClient.newCall(request).execute()
-            if(response.isSuccessful) {
-                val  obj = JSONObject(response.body!!.string())
+            if (response.isSuccessful) {
+                val obj = JSONObject(response.body!!.string())
                 val status = obj["status"].toString()
-                if (status == "true") {
+                if (status=="true"){
                     val message = obj["message"].toString()
                     Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
-                    return@setOnClickListener
-                }else if (status == "false") {
+                    intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }else{
                     val message = obj["message"].toString()
                     Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
-            }else{
+            } else {
                 Toast.makeText(applicationContext, "เกิดข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
             }
         }
     }

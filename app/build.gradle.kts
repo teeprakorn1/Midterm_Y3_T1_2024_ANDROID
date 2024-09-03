@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.media3.common)
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation (libs.imagepicker)
     testImplementation(libs.junit)

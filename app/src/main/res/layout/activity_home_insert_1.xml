@@ -67,8 +67,8 @@
             style="@style/input_info"
             android:layout_marginTop="5dp"
             android:autofillHints=""
-            android:inputType="numberDecimal"
-            tools:ignore="LabelFor" />
+            android:inputType="text"
+            tools:ignore="LabelFor,TextFields" />
 
     </LinearLayout>
 
@@ -247,7 +247,7 @@
             style="@style/input_info"
             android:layout_marginTop="5dp"
             android:autofillHints=""
-            android:inputType="text"
+            android:inputType="number"
             tools:ignore="LabelFor" />
 
     </LinearLayout>

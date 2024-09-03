@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Button
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,8 +28,16 @@ class HomeSelect_1 : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
 
         val searchButton = findViewById<Button>(R.id.Search_Button)
+        val homeIDEdittext = findViewById<EditText>(R.id.HomeID_edittext)
+
         searchButton.setOnClickListener {
+            if (homeIDEdittext.text.toString().isEmpty()){
+                homeIDEdittext.error = "กรุณากรอกข้อมูล"
+                return@setOnClickListener
+            }
             val intent = Intent(this, HomeSelect_2::class.java)
+            intent.putExtra("homeID",homeIDEdittext.text.toString())
+            intent.putExtra("statusActivity","1")
             startActivity(intent)
         }
     }
